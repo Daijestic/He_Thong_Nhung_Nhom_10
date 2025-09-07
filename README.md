@@ -1,4 +1,3 @@
-# He_Thong_Nhung_Nhom_10
 # Nhóm_10_DTMT01
 
 Cài đặt phần mềm, công cụ lập trình cho STM32F1 và Blinking LED
