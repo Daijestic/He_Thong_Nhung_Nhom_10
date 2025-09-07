@@ -18,21 +18,21 @@ void GPIO_Config_LED()
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 
     GPIO_InitStruct.GPIO_Pin = GPIO_Pin_5;
-    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_Out_PP; 
+    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_Out_PP;
     GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
     GPIO_Init(GPIOA, &GPIO_InitStruct);
 }
 
-// cau hinh nut nhan tai chan PB2
+// cau hinh nut nhan tai chan PA6
 void GPIO_Config_Button()
 {
     GPIO_InitTypeDef GPIO_InitStruct;
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+    RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA, ENABLE);
 
-    GPIO_InitStruct.GPIO_Pin = GPIO_Pin_2;
-    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IPU; 
+    GPIO_InitStruct.GPIO_Pin = GPIO_Pin_6;
+    GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IPU; // keo len noi, nhan xuong se ve 0
     GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
-    GPIO_Init(GPIOB, &GPIO_InitStruct);
+    GPIO_Init(GPIOA, &GPIO_InitStruct);
 }
 
 int main(void)
@@ -44,21 +44,20 @@ int main(void)
 
     while (1)
     {
-        // neu nut nhan duoc bam (muc 0)
-        if ((GPIOB->IDR & GPIO_Pin_2) == 0)
+        // kiem tra nut nhan tai PA6
+        if ((GPIOA->IDR & GPIO_Pin_6) == 0) // muc 0 = nut nhan
         {
-            delay_ms(5); // chong doi phim
-            if ((GPIOB->IDR & GPIO_Pin_2) == 0)
+            delay_ms(20); // chong doi phim
+            if ((GPIOA->IDR & GPIO_Pin_6) == 0) // neu van giu
             {
-                // dao trang thai led
-                ledState = !ledState;
+                ledState = !ledState; // dao trang thai LED
                 if (ledState)
                     GPIO_SetBits(GPIOA, GPIO_Pin_5);
                 else
                     GPIO_ResetBits(GPIOA, GPIO_Pin_5);
 
-                // cho den khi nha nut
-                while ((GPIOB->IDR & GPIO_Pin_2) == 0);
+                // doi den khi nha nut roi moi cho bam tiep
+                while ((GPIOA->IDR & GPIO_Pin_6) == 0);
             }
         }
     }
